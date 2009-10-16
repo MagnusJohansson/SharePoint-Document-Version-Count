@@ -1,0 +1,6 @@
+D:\Projects\CountFileVersions\CountFileVersions\bin\Debug\CountFileVersions.exe.config
+D:\Projects\CountFileVersions\CountFileVersions\bin\Debug\CountFileVersions.exe
+D:\Projects\CountFileVersions\CountFileVersions\bin\Debug\CountFileVersions.pdb
+D:\Projects\CountFileVersions\CountFileVersions\obj\Debug\ResolveAssemblyReference.cache
+D:\Projects\CountFileVersions\CountFileVersions\obj\Debug\CountFileVersions.exe
+D:\Projects\CountFileVersions\CountFileVersions\obj\Debug\CountFileVersions.pdb

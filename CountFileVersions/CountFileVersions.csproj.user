@@ -1,0 +1,5 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <StartArguments>-url http://cic-dev.csintra.net  -doclib "content_documents"</StartArguments>
+  </PropertyGroup>
+</Project>
