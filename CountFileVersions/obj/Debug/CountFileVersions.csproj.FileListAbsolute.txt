@@ -4,3 +4,7 @@ D:\Projects\CountFileVersions\CountFileVersions\bin\Debug\CountFileVersions.pdb
 D:\Projects\CountFileVersions\CountFileVersions\obj\Debug\ResolveAssemblyReference.cache
 D:\Projects\CountFileVersions\CountFileVersions\obj\Debug\CountFileVersions.exe
 D:\Projects\CountFileVersions\CountFileVersions\obj\Debug\CountFileVersions.pdb
+C:\Share\CodePlex\WSSDocVerCount\CountFileVersions\bin\Debug\CountFileVersions.exe.config
+C:\Share\CodePlex\WSSDocVerCount\CountFileVersions\obj\Debug\CountFileVersions.exe
+C:\Share\CodePlex\WSSDocVerCount\CountFileVersions\obj\Debug\CountFileVersions.pdb
+C:\Share\CodePlex\WSSDocVerCount\CountFileVersions\obj\Debug\ResolveAssemblyReference.cache

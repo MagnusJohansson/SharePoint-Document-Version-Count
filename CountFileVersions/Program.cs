@@ -16,6 +16,7 @@ namespace CountFileVersions
       string docLibName = string.Empty;
       string outFilename = string.Empty;
       string outFileSepChar = "\t";
+      bool purge = false;
 
       try
       {
@@ -57,15 +58,36 @@ namespace CountFileVersions
           outFileSepChar = dictArgs["sepchar"];
         }
 
+        if (dictArgs.ContainsKey("purge"))
+        {
+          if (dictArgs["purge"].ToString().ToLower() == "y")
+          {
+            purge = true;
+          }
+          else
+          {
+            Console.Write("Are you sure you want to purge your items [y/n]?");
+            ConsoleKeyInfo keyInfo = Console.ReadKey();
+            if (keyInfo.Key == ConsoleKey.Y)
+            {
+              purge = true;
+            }
+            else
+            {
+              return;
+            }
+            Console.WriteLine();
+          }
+        }
 
         CountAllFileVersions(siteUrl,
             webUrl,
             docLibName,
             outFilename,
-            outFileSepChar);
+            outFileSepChar,
+            purge);
 
-        Console.WriteLine("Press return to continue.");
-        Console.ReadLine();
+        Console.WriteLine("Done.");
       }
       catch (Exception ex)
       {
@@ -77,7 +99,16 @@ namespace CountFileVersions
     private static void Usage()
     {
       Console.WriteLine("Usage:");
-      Console.WriteLine("CountFileVersions.exe -url <website> <-web <webname>> -doclib <document library name> -outfile <filename> -sepchar <sepchar>");
+      Console.WriteLine("CountFileVersions.exe -url <website> [-web <webname>] -doclib <document library name> -outfile <filename> -sepchar <sepchar> [-purge [y]]");
+      Console.WriteLine();
+      Console.WriteLine("Examples:");
+      Console.WriteLine();
+      Console.WriteLine("CountFileVersions -url http://mysite -web subsite -doclib mylib");
+      Console.WriteLine("\tDisplays all files and versions in the mylib library.");
+      Console.WriteLine();
+      Console.WriteLine("CountFileVersions -url http://mysite -doclib mylib -purge y");
+      Console.WriteLine("\tDisplays all files and versions in the mylib library.");
+      Console.WriteLine("\tAnd purges all versions.");
     }
 
     private static void CountAllFileVersions(
@@ -85,10 +116,12 @@ namespace CountFileVersions
       string webUrl,
       string docLibName,
       string outFilename,
-      string outFileSepChar)
+      string outFileSepChar,
+      bool purge)
     {
       int totalFileCount = 0;
       int totalCount = 0;
+      int purgedCount = 0;
       bool writeToFile = outFilename.Length > 0;
       StreamWriter sw = null;
 
@@ -101,8 +134,26 @@ namespace CountFileVersions
       {
         using (SPWeb web = site.OpenWeb(webUrl))
         {
-          SPList list = web.Lists[docLibName];
+          SPList list = null;
+          try
+          {
+            list = web.Lists[docLibName];
+          }
+          catch (Exception ex)
+          {
+            Console.WriteLine("Can't open the list " + docLibName);
+            Console.WriteLine("Reason: " + ex.Message);
+            return;
+          }
 
+          if (purge)
+          {
+            Console.WriteLine("Scanning and purging...");
+          }
+          else
+          {
+            Console.WriteLine("Scanning...");
+          }
           foreach (SPListItem item in list.Items)
           {
             if (item.File != null)
@@ -115,6 +166,12 @@ namespace CountFileVersions
               totalCount += item.File.Versions.Count + 1;
 
               totalFileCount++;
+              if (purge && item.File.Versions.Count > 0)
+              {
+                purgedCount += item.File.Versions.Count;
+                item.File.Versions.DeleteAll();
+              }
+
             }
           }
         }
@@ -128,6 +185,7 @@ namespace CountFileVersions
 
       Console.WriteLine("Total number of files: {0}", totalFileCount);
       Console.WriteLine("Total number of versions: {0}", totalCount);
+      Console.WriteLine("Total number of versions purged: {0}", purgedCount);
     }
   }
 }
